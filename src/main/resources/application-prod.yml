@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://oscar:${MONGO_PASS}@127.0.0.1:27017/oscar

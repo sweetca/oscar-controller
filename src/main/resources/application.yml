@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: WARN
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    com.codescoop.crawler: WARN
