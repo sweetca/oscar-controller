@@ -20,6 +20,9 @@ public class Job implements Comparable<Job> {
     private JobType type;
 
     @Indexed
+    private String component;
+
+    @Indexed
     private String task;
 
     @Indexed

@@ -32,11 +32,6 @@ public class TaskPipelineRepositoryImpl implements TaskPipelineRepositoryCustom 
     @Override
     public SortedSet<TaskPipeline> findTaskStatusInProgress() {
         Query query = new Query();
-        query.fields().include("_id");
-        query.fields().include("progress");
-        query.fields().include("finished");
-        query.fields().include("created");
-        query.fields().include("updated");
         query.addCriteria(Criteria.where("finished").is(false));
         return new TreeSet<>(this.mongoOperations.find(query, TaskPipeline.class));
     }

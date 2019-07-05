@@ -10,16 +10,12 @@ public enum JobType {
 
     ort_scan(30),
 
-    nvd_update(40);
+    vulnerabilities(40);
 
     private int type;
 
     JobType(int type) {
         this.type = type;
-    }
-
-    public int getType() {
-        return this.type;
     }
 
     @JsonCreator
@@ -30,5 +26,9 @@ public enum JobType {
             }
         }
         return null;
+    }
+
+    public int getType() {
+        return this.type;
     }
 }

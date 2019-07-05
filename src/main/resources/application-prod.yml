@@ -1,4 +1,8 @@
+application:
+  git:
+    repository-dir: /tmp/oscar/repositories
+
 spring:
   data:
     mongodb:
-      uri: mongodb://oscar:${MONGO_PASS}@127.0.0.1:27017/oscar
+      uri: mongodb://${MONGO_LOGIN}:${MONGO_PASS}@127.0.0.1:27017/oscar

@@ -10,20 +10,24 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document
-public class TaskPipeline {
+public class TaskPipeline implements Comparable<TaskPipeline> {
 
     @Id
     private String id;
 
-    private int progress = 0;
+    @Indexed
+    private String component;
 
     @Indexed
     private boolean finished = false;
+
+    private int progress = 0;
 
     private Date created = new Date();
 
@@ -33,4 +37,16 @@ public class TaskPipeline {
 
     @Transient
     private SortedSet<Job> jobsReference = new TreeSet<>();
+
+    public void setJobsReference(SortedSet<Job> jobs) {
+        if (jobs != null) {
+            this.jobsReference = jobs;
+            this.jobs.addAll(this.jobsReference.stream().map(Job::getId).collect(Collectors.toSet()));
+        }
+    }
+
+    @Override
+    public int compareTo(TaskPipeline o) {
+        return this.created.compareTo(o.getCreated());
+    }
 }

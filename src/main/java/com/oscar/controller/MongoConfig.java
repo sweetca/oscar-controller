@@ -15,8 +15,8 @@ public class MongoConfig {
                 .socketKeepAlive(true)
                 .maxConnectionIdleTime(120000)
                 .maxConnectionLifeTime(0)
-                .connectionsPerHost(50)
-                .minConnectionsPerHost(5)
+                .connectionsPerHost(10)
+                .minConnectionsPerHost(1)
                 .build();
     }
 }

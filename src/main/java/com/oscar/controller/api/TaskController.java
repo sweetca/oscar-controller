@@ -21,7 +21,7 @@ public class TaskController {
     @PostMapping(value = "")
     public ResponseEntity<?> requestTask(@RequestBody TaskRequestDto taskRequest) {
         try {
-            return ResponseEntity.ok("ok");
+            return ResponseEntity.ok(this.taskService.setupTask(taskRequest));
         } catch (Exception e) {
             return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
         }

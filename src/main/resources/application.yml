@@ -5,6 +5,9 @@ spring:
 server:
   port: 8081
 
+application:
+  repositoryDir: /tmp/oscar/repositories
+
 logging:
   level:
     root: WARN
