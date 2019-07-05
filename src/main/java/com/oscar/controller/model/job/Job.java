@@ -26,6 +26,9 @@ public class Job implements Comparable<Job> {
     private String task;
 
     @Indexed
+    private String relatedJob;
+
+    @Indexed
     private boolean finished = false;
 
     @Indexed

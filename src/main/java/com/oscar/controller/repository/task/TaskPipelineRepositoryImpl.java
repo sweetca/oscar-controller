@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
+import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,5 +36,14 @@ public class TaskPipelineRepositoryImpl implements TaskPipelineRepositoryCustom 
         Query query = new Query();
         query.addCriteria(Criteria.where("finished").is(false));
         return new TreeSet<>(this.mongoOperations.find(query, TaskPipeline.class));
+    }
+
+    @Override
+    public void incrementTaskProgress(String taskId) {
+        Query query = new Query(Criteria.where("_id").is(taskId));
+        this.mongoOperations.updateFirst(
+                query,
+                Update.update("updated", new Date()).inc("progress", 1),
+                TaskPipeline.class);
     }
 }

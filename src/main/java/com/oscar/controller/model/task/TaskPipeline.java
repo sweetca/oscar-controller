@@ -27,7 +27,7 @@ public class TaskPipeline implements Comparable<TaskPipeline> {
     @Indexed
     private boolean finished = false;
 
-    private int progress = 0;
+    private long progress = 0L;
 
     private Date created = new Date();
 
@@ -48,5 +48,13 @@ public class TaskPipeline implements Comparable<TaskPipeline> {
     @Override
     public int compareTo(TaskPipeline o) {
         return this.created.compareTo(o.getCreated());
+    }
+
+    public int getProgressBar() {
+        if (jobs.size() == progress) {
+            return 100;
+        } else {
+            return (100 / jobs.size()) * (int) progress;
+        }
     }
 }

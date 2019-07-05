@@ -9,4 +9,6 @@ public interface TaskPipelineRepositoryCustom {
     TaskPipeline findTaskStatusById(String taskId);
 
     SortedSet<TaskPipeline> findTaskStatusInProgress();
+
+    void incrementTaskProgress(String taskId);
 }

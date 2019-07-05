@@ -38,6 +38,9 @@ public class Component {
         if (type == null) {
             return "Not valid component type! Accept github|gitlab|source.";
         }
+        if (isBlank(branch)) {
+            return "Not valid git branch!";
+        }
         if (credentials == null || isBlank(credentials.getAccessToken()) || isBlank(credentials.getAccessToken())) {
             return "Not valid git credentials!";
         }

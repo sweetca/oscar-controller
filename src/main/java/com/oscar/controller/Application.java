@@ -13,11 +13,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.util.UrlPathHelper;
-
-import java.nio.charset.StandardCharsets;
 import java.util.TimeZone;
 import java.util.concurrent.Executor;
 
@@ -26,21 +21,13 @@ import java.util.concurrent.Executor;
 @EnableMongoRepositories("com.oscar.controller")
 @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
-public class Application extends WebMvcConfigurerAdapter {
+public class Application {
 
     public static void main(String[] args) {
         System.setProperty("user.timezone", "UTC");
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
         SpringApplication.run(Application.class);
-    }
-
-    @Override
-    public void configurePathMatch(PathMatchConfigurer configurer) {
-        UrlPathHelper urlPathHelper = new UrlPathHelper();
-        urlPathHelper.setUrlDecode(false);
-        urlPathHelper.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        configurer.setUrlPathHelper(urlPathHelper);
     }
 
     @Bean
