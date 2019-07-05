@@ -2,6 +2,7 @@ package com.oscar.controller.model.component;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Date;
 
@@ -12,6 +13,9 @@ public class Component {
 
     @Id
     private String id;
+
+    @Indexed
+    private String version;
 
     private String owner;
 
@@ -26,8 +30,6 @@ public class Component {
     private GitCredentials credentials;
 
     private boolean privateAccess = false;
-
-    private String version;
 
     private Date date = new Date();
 

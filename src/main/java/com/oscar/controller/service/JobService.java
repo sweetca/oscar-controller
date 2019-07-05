@@ -78,12 +78,13 @@ public class JobService {
             job.setComponent(component.getId());
 
             Map<String, Object> payload = job.getPayload();
-            payload.put("gitId", component.getId());
+            payload.put("component", component.getId());
+            payload.put("componentVersion", component.getVersion());
             payload.put("componentType", component.getType().name());
-            payload.put("accessToken", component.getCredentials().getAccessToken());
-            payload.put("userName", component.getCredentials().getAccessToken());
             payload.put("componentPath", getRepoPath(component.getType().name(), component.getId()));
             payload.put("gitBranch", component.getBranch());
+            payload.put("gitToken", component.getCredentials().getAccessToken());
+            payload.put("gitName", component.getCredentials().getUserName());
 
             if (component.isPrivateAccess()) {
                 payload.put("gitUrl", UrlUtil.privateAccessUrl(component));
