@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OrtScanRepository extends MongoRepository<OrtScan, String> {
 
-    Optional<OrtScan> findOrtScanByComponent(@Param("component") String component);
+    Optional<OrtScan> findByComponent(@Param("component") String component);
 
-    Optional<OrtScan> findOrtScanByComponentAndVersion(@Param("component") String component, @Param("version") String version);
+    Optional<OrtScan> findByComponentAndVersion(@Param("component") String component, @Param("version") String version);
 }

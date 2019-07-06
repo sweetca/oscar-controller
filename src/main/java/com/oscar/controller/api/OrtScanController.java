@@ -43,10 +43,10 @@ public class OrtScanController {
     }
 
     @PostMapping("/report/{component}/{version}")
-    public ResponseEntity<?> uploadStackScanResult(@PathVariable String component,
-                                                   @PathVariable String version,
-                                                   @RequestBody OrtScanReport report) {
-        log.info("new scan result for scan {}/{}", component, version);
+    public ResponseEntity<?> uploadScanReport(@PathVariable String component,
+                                              @PathVariable String version,
+                                              @RequestBody OrtScanReport report) {
+        log.info("save scan result for {}/{}", component, version);
         report.setComponent(component);
         report.setVersion(version);
         report.setDate(new Date());
@@ -54,28 +54,28 @@ public class OrtScanController {
     }
 
     @PostMapping("/error/{component}/{version}")
-    public ResponseEntity<?> uploadStackScanError(@PathVariable String component,
-                                                  @PathVariable String version,
-                                                  @RequestBody OrtScanError error) {
-        log.info("new scan error for scan {}/{}", component, version);
+    public ResponseEntity<?> uploadScanError(@PathVariable String component,
+                                             @PathVariable String version,
+                                             @RequestBody OrtScanError error) {
+        log.info("save scan error for {}/{}", component, version);
         error.setComponent(component);
         error.setVersion(version);
         return ResponseEntity.ok(this.ortScanService.saveError(error).getId());
     }
 
     @PostMapping("/html/{component}/{version}")
-    public ResponseEntity<?> uploadReport(@PathVariable String component,
-                                          @PathVariable String version,
-                                          @RequestBody String content) {
-        log.info("new scan html for scan {}/{}", component, version);
+    public ResponseEntity<?> uploadScanHtml(@PathVariable String component,
+                                            @PathVariable String version,
+                                            @RequestBody String content) {
+        log.info("save scan html for {}/{}", component, version);
         return ResponseEntity.ok(this.ortScanService.saveHtml(content, component, version).getId());
     }
 
     @PostMapping("/logs/{component}/{version}")
-    public ResponseEntity<?> uploadLogs(@PathVariable String component,
-                                        @PathVariable String version,
-                                        @RequestBody String content) {
-        log.info("new scan logs for scan {}/{}", component, version);
+    public ResponseEntity<?> uploadScanLogs(@PathVariable String component,
+                                            @PathVariable String version,
+                                            @RequestBody String content) {
+        log.info("save scan logs for {}/{}", component, version);
         return ResponseEntity.ok(this.ortScanService.saveLogs(content, component, version).getId());
     }
 }

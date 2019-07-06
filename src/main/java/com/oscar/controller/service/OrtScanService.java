@@ -9,6 +9,8 @@ import com.oscar.controller.repository.ort.OrtScanRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 public class OrtScanService {
@@ -30,37 +32,49 @@ public class OrtScanService {
 
     public OrtScan readScan(String component) {
         OrtScan scan = this.ortScanRepository
-                .findOrtScanByComponent(component)
+                .findByComponent(component)
                 .orElseThrow(OscarDataException::noOrtScanFound);
 
         scan.setReport(this.ortScanReportRepository
-                .findOrtScanByComponent(component).orElse(null));
+                .findByComponent(component).orElse(null));
         scan.setHtml(this.ortScanHtmlRepository
-                .findOrtScanByComponent(component).orElse(null));
+                .findByComponent(component).orElse(null));
         scan.setLogs(this.ortScanLogsRepository
-                .findOrtScanByComponent(component).orElse(null));
+                .findByComponent(component).orElse(null));
 
         return scan;
     }
 
     public OrtScan readScan(String component, String version) {
         OrtScan scan = this.ortScanRepository
-                .findOrtScanByComponentAndVersion(component, version)
+                .findByComponentAndVersion(component, version)
                 .orElseThrow(OscarDataException::noOrtScanFound);
 
         scan.setReport(this.ortScanReportRepository
-                .findOrtScanByComponentAndVersion(component, version).orElse(null));
+                .findByComponentAndVersion(component, version).orElse(null));
         scan.setHtml(this.ortScanHtmlRepository
-                .findOrtScanByComponentAndVersion(component, version).orElse(null));
+                .findByComponentAndVersion(component, version).orElse(null));
         scan.setLogs(this.ortScanLogsRepository
-                .findOrtScanByComponentAndVersion(component, version).orElse(null));
+                .findByComponentAndVersion(component, version).orElse(null));
 
         return scan;
     }
 
     public OrtScan saveReport(final OrtScanReport report) {
-        this.ortScanReportRepository.save(report);
-        log.info("ort scan report created {}/{}", report.getComponent(), report.getVersion());
+        OrtScanReport storedReport = this.ortScanReportRepository
+                .findByComponentAndVersion(report.getComponent(), report.getVersion())
+                .orElseGet(() -> {
+                    OrtScanReport dto = new OrtScanReport();
+                    dto.setComponent(report.getComponent());
+                    dto.setVersion(report.getVersion());
+                    return dto;
+                });
+        storedReport.setDate(new Date());
+        storedReport.setResult(report.getResult());
+        storedReport.setType(report.getType());
+
+        this.ortScanReportRepository.save(storedReport);
+        log.info("ort scan report saved {}/{}", report.getComponent(), report.getVersion());
         return insureScan(report.getComponent(), report.getVersion());
     }
 
@@ -73,7 +87,9 @@ public class OrtScanService {
     }
 
     public OrtScan saveHtml(final String html, final String component, final String version) {
-        OrtScanHtml scanHtml = new OrtScanHtml();
+        OrtScanHtml scanHtml = this.ortScanHtmlRepository
+                .findByComponentAndVersion(component, version)
+                .orElseGet(OrtScanHtml::new);
         scanHtml.setComponent(component);
         scanHtml.setVersion(version);
         scanHtml.setContent(html);
@@ -83,7 +99,9 @@ public class OrtScanService {
     }
 
     public OrtScan saveLogs(final String logs, final String component, final String version) {
-        OrtScanLogs scanLogs = new OrtScanLogs();
+        OrtScanLogs scanLogs = this.ortScanLogsRepository
+                .findByComponentAndVersion(component, version)
+                .orElseGet(OrtScanLogs::new);
         scanLogs.setComponent(component);
         scanLogs.setVersion(version);
         scanLogs.setContent(logs);
@@ -93,7 +111,7 @@ public class OrtScanService {
     }
 
     private OrtScan insureScan(final String component, final String version) {
-        return this.ortScanRepository.findOrtScanByComponentAndVersion(component, version).orElseGet(() -> {
+        return this.ortScanRepository.findByComponentAndVersion(component, version).orElseGet(() -> {
             OrtScan scan = new OrtScan();
             scan.setComponent(component);
             scan.setVersion(version);
