@@ -52,7 +52,7 @@ public class JobService {
         for (Job job : availableJobs) {
             if (isBlank(job.getRelatedJob()) || this.jobRepository.isFinished(job.getRelatedJob())) {
                 this.jobRepository.lockJob(job.getId());
-                log.info("Providing job {} on find request of pod {}", job.getId(), podName);
+                log.info("Providing job {} for pod {}", job.getId(), podName);
                 return job;
             }
         }
@@ -60,11 +60,14 @@ public class JobService {
         return null;
     }
 
-    public Job finishJob(final String jobId, final String podName) {
+    public synchronized Job finishJob(final String jobId, final String podName) {
         Job job = this.jobRepository.findById(jobId).orElseThrow(OscarDataException::noJobFound);
         this.jobRepository.finishJob(job.getId());
-        this.taskPipelineRepository.incrementTaskProgress(job.getTask());
-        log.debug("Job finished {} by pod {}", jobId, podName);
+        boolean taskFinished = this.taskPipelineRepository.incrementTaskProgress(job.getTask());
+        log.info("Job {} finished by pod {}", jobId, podName);
+        if (taskFinished) {
+            log.info("Task {} finished", job.getTask());
+        }
         return job;
     }
 

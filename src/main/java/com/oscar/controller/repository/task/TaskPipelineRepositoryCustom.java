@@ -10,5 +10,5 @@ public interface TaskPipelineRepositoryCustom {
 
     SortedSet<TaskPipeline> findTaskStatusInProgress();
 
-    void incrementTaskProgress(String taskId);
+    boolean incrementTaskProgress(String taskId);
 }
