@@ -8,6 +8,8 @@ public class OscarDataException extends IllegalStateException {
 
     private static final String NO_FOSSOLOGY_SCAN_FOUND = "Fossology scan not found.";
 
+    private static final String NO_ORT_SCAN_FOUND = "Ort scan not found.";
+
     public OscarDataException(String message) {
         super(message);
     }
@@ -22,5 +24,9 @@ public class OscarDataException extends IllegalStateException {
 
     public static OscarDataException noFossologyFound() {
         return new OscarDataException(NO_FOSSOLOGY_SCAN_FOUND);
+    }
+
+    public static OscarDataException noOrtScanFound() {
+        return new OscarDataException(NO_ORT_SCAN_FOUND);
     }
 }

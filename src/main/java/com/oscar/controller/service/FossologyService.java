@@ -38,7 +38,7 @@ public class FossologyService {
             ScanResultDto dto = this.scanResultFromJson(dtoJson);
             if (isNotBlank(dto.getError())) {
                 scan.setError(dto.getError());
-            } else  {
+            } else {
                 scan.setParsedResponse(new NodeParser(dto).result());
             }
         } catch (Exception e) {
