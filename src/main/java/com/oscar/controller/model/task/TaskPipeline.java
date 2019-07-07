@@ -25,6 +25,9 @@ public class TaskPipeline implements Comparable<TaskPipeline> {
     private String component;
 
     @Indexed
+    private String version;
+
+    @Indexed
     private boolean finished = false;
 
     private long progress = 0L;

@@ -1,7 +1,11 @@
 package com.oscar.controller.model.component;
 
+import com.oscar.controller.model.fossology.FossologyScan;
+import com.oscar.controller.model.ort.OrtScan;
+import com.oscar.controller.model.task.TaskPipeline;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Date;
@@ -32,6 +36,15 @@ public class Component {
     private boolean privateAccess = false;
 
     private Date date = new Date();
+
+    @Transient
+    private TaskPipeline task;
+
+    @Transient
+    private FossologyScan fossologyScan;
+
+    @Transient
+    private OrtScan ortScan;
 
     public String isValid() {
         if (isBlank(url)) {

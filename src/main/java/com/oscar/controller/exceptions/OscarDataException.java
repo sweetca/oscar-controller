@@ -10,6 +10,8 @@ public class OscarDataException extends IllegalStateException {
 
     private static final String NO_ORT_SCAN_FOUND = "Ort scan not found.";
 
+    private static final String NO_COMPONENT_FOUND = "Component not found.";
+
     public OscarDataException(String message) {
         super(message);
     }
@@ -28,5 +30,9 @@ public class OscarDataException extends IllegalStateException {
 
     public static OscarDataException noOrtScanFound() {
         return new OscarDataException(NO_ORT_SCAN_FOUND);
+    }
+
+    public static OscarDataException noComponentFound() {
+        return new OscarDataException(NO_COMPONENT_FOUND);
     }
 }

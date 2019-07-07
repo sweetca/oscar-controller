@@ -1,6 +1,5 @@
 package com.oscar.controller.api;
 
-import com.oscar.controller.model.ort.OrtScanError;
 import com.oscar.controller.model.ort.OrtScanReport;
 import com.oscar.controller.service.OrtScanService;
 import lombok.extern.slf4j.Slf4j;
@@ -56,11 +55,9 @@ public class OrtScanController {
     @PostMapping("/error/{component}/{version}")
     public ResponseEntity<?> uploadScanError(@PathVariable String component,
                                              @PathVariable String version,
-                                             @RequestBody OrtScanError error) {
+                                             @RequestBody String error) {
         log.info("save scan error for {}/{}", component, version);
-        error.setComponent(component);
-        error.setVersion(version);
-        return ResponseEntity.ok(this.ortScanService.saveError(error).getId());
+        return ResponseEntity.ok(this.ortScanService.saveError(error, component, version).getId());
     }
 
     @PostMapping("/html/{component}/{version}")

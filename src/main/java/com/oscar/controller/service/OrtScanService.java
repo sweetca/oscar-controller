@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -60,6 +61,22 @@ public class OrtScanService {
         return scan;
     }
 
+    public Optional<OrtScan> readScanOpt(String component) {
+        try {
+            return Optional.of(readScan(component));
+        } catch (OscarDataException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<OrtScan> readScanOpt(String component, String version) {
+        try {
+            return Optional.of(readScan(component, version));
+        } catch (OscarDataException e) {
+            return Optional.empty();
+        }
+    }
+
     public OrtScan saveReport(final OrtScanReport report) {
         OrtScanReport storedReport = this.ortScanReportRepository
                 .findByComponentAndVersion(report.getComponent(), report.getVersion())
@@ -78,11 +95,11 @@ public class OrtScanService {
         return insureScan(report.getComponent(), report.getVersion());
     }
 
-    public OrtScan saveError(final OrtScanError error) {
-        OrtScan scan = insureScan(error.getComponent(), error.getVersion());
-        scan.setError(error.getError());
+    public OrtScan saveError(final String error, String component, String version) {
+        OrtScan scan = insureScan(component, version);
+        scan.setError(error);
         this.ortScanRepository.save(scan);
-        log.info("ort scan error created {}/{}", error.getComponent(), error.getVersion());
+        log.info("ort scan error created {}/{}", component, version);
         return scan;
     }
 
