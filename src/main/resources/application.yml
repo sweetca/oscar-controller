@@ -1,12 +1,15 @@
 spring:
   profiles:
     active: local
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/oscar
 
 server:
   port: 8081
 
 application:
-  repositoryDir: /tmp/oscar/repositories
+  repositoryDir: /tmp/oscar
 
 logging:
   level:

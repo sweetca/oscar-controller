@@ -17,4 +17,6 @@ RUN ["mvn", "install"]
 
 FROM openjdk:8-jdk-alpine
 COPY --from=builder ./app/target/oscar-controller-0.1.jar ./app.jar
-RUN ["java", "-jar", "/app.jar"]
+
+ENV JAVA_OPTS=""
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar /app.jar" ]
