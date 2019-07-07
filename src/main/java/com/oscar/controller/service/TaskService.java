@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -39,6 +40,24 @@ public class TaskService {
         task.getJobsReference()
                 .addAll(this.jobService.findJobsByIds(task.getJobs()));
         return task;
+    }
+
+    public Optional<TaskPipeline> findFullTaskByComponent(String component) {
+        TaskPipeline task = this.taskPipelineRepository.findByComponent(component).orElse(null);
+        if (task != null) {
+            task.getJobsReference().addAll(this.jobService.findJobsByIds(task.getJobs()));
+            return Optional.of(task);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<TaskPipeline> findFullTaskByComponentAndVersion(String component, String version) {
+        TaskPipeline task = this.taskPipelineRepository.findByComponentAndVersion(component, version).orElse(null);
+        if (task != null) {
+            task.getJobsReference().addAll(this.jobService.findJobsByIds(task.getJobs()));
+            return Optional.of(task);
+        }
+        return Optional.empty();
     }
 
     public TaskPipeline findStatusTaskById(String taskId) {
@@ -72,6 +91,7 @@ public class TaskService {
 
         TaskPipeline taskPipeline = new TaskPipeline();
         taskPipeline.setComponent(component.getId());
+        taskPipeline.setVersion(component.getVersion());
         taskPipeline.setJobsReference(jobs);
 
         taskPipeline = this.taskPipelineRepository.save(taskPipeline);

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
@@ -30,10 +31,10 @@ public class FossologyService {
     }
 
     public String persistScanResult(String dtoJson, String component, String version) {
-        FossologyScan scan = new FossologyScan();
-        scan.setComponent(component);
-        scan.setVersion(version);
+        FossologyScan scan = this.insureScan(component, version);
+        scan.setDate(new Date());
         scan.setOriginalResponse(dtoJson);
+
         try {
             ScanResultDto dto = this.scanResultFromJson(dtoJson);
             if (isNotBlank(dto.getError())) {
@@ -49,20 +50,35 @@ public class FossologyService {
         return scan.getId();
     }
 
+    public String persistScanError(String error, String component, String version) {
+        FossologyScan scan = this.insureScan(component, version);
+        scan.setDate(new Date());
+        scan.setError(error);
+        scan = this.fossologyRepository.save(scan);
+        return scan.getId();
+    }
+
     public FossologyScan findScan(String component) {
-        FossologyScan scan = this.fossologyRepository.findScanByComponent(component);
-        if (scan == null) {
-            throw OscarDataException.noFossologyFound();
-        }
-        return scan;
+        return this.fossologyRepository
+                .findByComponent(component)
+                .orElseThrow(OscarDataException::noFossologyFound);
     }
 
     public FossologyScan findScan(String component, String version) {
-        FossologyScan scan = this.fossologyRepository.findScanByComponentAndVersion(component, version);
-        if (scan == null) {
-            throw OscarDataException.noFossologyFound();
-        }
-        return scan;
+        return this.fossologyRepository
+                .findByComponentAndVersion(component, version)
+                .orElseThrow(OscarDataException::noFossologyFound);
+    }
+
+    private FossologyScan insureScan(String component, String version) {
+        return this.fossologyRepository
+                .findByComponentAndVersion(component, version)
+                .orElseGet(() -> {
+                    FossologyScan dto = new FossologyScan();
+                    dto.setComponent(component);
+                    dto.setVersion(version);
+                    return dto;
+                });
     }
 
     private ScanResultDto scanResultFromJson(String json) throws IOException {
