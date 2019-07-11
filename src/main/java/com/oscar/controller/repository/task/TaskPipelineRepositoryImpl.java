@@ -40,12 +40,9 @@ public class TaskPipelineRepositoryImpl implements TaskPipelineRepositoryCustom 
 
     @Override
     public boolean incrementTaskProgress(String taskId) {
-        Query query = new Query(Criteria.where("_id").is(taskId));
-        query.fields().include("progress");
-        query.fields().include("finished");
-        query.fields().include("jobs");
+        Query query = Query.query(Criteria.where("_id").is(taskId));
         TaskPipeline task = this.mongoOperations.findOne(query, TaskPipeline.class);
-        task.setProgress(task.getProgress() + 1L);
+        task.setProgress(task.getProgress() + 1);
         if (task.getProgress() >= task.getJobs().size()) {
             task.setFinished(true);
         }

@@ -12,6 +12,8 @@ public class OscarDataException extends IllegalStateException {
 
     private static final String NO_COMPONENT_FOUND = "Component not found.";
 
+    private static final String NO_COMPONENT_DATA = "Component data not found.";
+
     public OscarDataException(String message) {
         super(message);
     }
@@ -34,5 +36,9 @@ public class OscarDataException extends IllegalStateException {
 
     public static OscarDataException noComponentFound() {
         return new OscarDataException(NO_COMPONENT_FOUND);
+    }
+
+    public static OscarDataException noComponentData() {
+        return new OscarDataException(NO_COMPONENT_DATA);
     }
 }

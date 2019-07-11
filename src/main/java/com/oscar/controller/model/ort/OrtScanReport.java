@@ -24,24 +24,54 @@ public class OrtScanReport {
 
     private Date date = new Date();
 
-    private List<ScanComponent> result;
-    private String type;
+    private List<Project> projects = new ArrayList<>();
+    private List<Package> packages = new ArrayList<>();
+    private List<Scan> scans = new ArrayList<>();
 
     @Data
-    public static class ScanComponent {
+    public static class Project {
         private String name;
-        private String path;
         private String purl;
+        private String file;
+        private String homepage;
+        private Vcs vcs;
         private List<String> licenses = new ArrayList<>();
-        private List<ScanPackage> packages = new ArrayList<>();
+        private List<Dependency> dependencies = new ArrayList<>();
     }
 
     @Data
-    public static class ScanPackage {
+    public static class Package {
         private String name;
         private String purl;
-        private List<String> parents = new ArrayList<>();
-        private List<String> scopes = new ArrayList<>();
+        private String description;
+        private String homepage;
+        private String source;
+        private Vcs vcs;
         private List<String> licenses = new ArrayList<>();
+    }
+
+    @Data
+    public static class Scan {
+        private String name;
+        private String url;
+        private Integer fileCount;
+        private Integer timeScan;
+        private List<String> licenses;
+    }
+
+    @Data
+    public static class Vcs {
+        private String type;
+        private String url;
+        private String revision;
+    }
+
+    @Data
+    public static class Dependency {
+        private String name;
+        private String scope;
+        private List<Dependency> dependencies = new ArrayList<>();
     }
 }
+
+

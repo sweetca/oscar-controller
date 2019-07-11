@@ -86,6 +86,12 @@ public class TaskService {
         if (!jobConfig.contains(JobType.git_clone)) {
             jobConfig.add(JobType.git_clone);
         }
+        if (jobConfig.contains(JobType.vulnerabilities)) {
+            jobConfig.add(JobType.ort_analyze);
+        }
+        if (jobConfig.contains(JobType.ort_scan)) {
+            jobConfig.remove(JobType.ort_analyze);
+        }
 
         SortedSet<Job> jobs = this.jobService.setupJobsFromRequest(component, jobConfig);
 

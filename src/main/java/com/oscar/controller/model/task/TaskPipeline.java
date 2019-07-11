@@ -30,7 +30,7 @@ public class TaskPipeline implements Comparable<TaskPipeline> {
     @Indexed
     private boolean finished = false;
 
-    private long progress = 0L;
+    private int progress = 0;
 
     private Date created = new Date();
 

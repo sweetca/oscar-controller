@@ -8,7 +8,9 @@ public enum JobType {
 
     fossy_scan(20),
 
-    ort_scan(30),
+    ort_analyze(30),
+
+    ort_scan(31),
 
     vulnerabilities(40);
 

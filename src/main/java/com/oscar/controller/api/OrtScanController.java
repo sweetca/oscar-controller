@@ -41,6 +41,26 @@ public class OrtScanController {
         }
     }
 
+    @GetMapping("/{component}/{version}/html")
+    public ResponseEntity<?> readOrtScanHtml(@PathVariable String component,
+                                         @PathVariable String version) {
+        try {
+            return ResponseEntity.ok(this.ortScanService.readHtml(component, version));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{component}/{version}/logs")
+    public ResponseEntity<?> readOrtScanLogs(@PathVariable String component,
+                                             @PathVariable String version) {
+        try {
+            return ResponseEntity.ok(this.ortScanService.readLogs(component, version));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/report/{component}/{version}")
     public ResponseEntity<?> uploadScanReport(@PathVariable String component,
                                               @PathVariable String version,

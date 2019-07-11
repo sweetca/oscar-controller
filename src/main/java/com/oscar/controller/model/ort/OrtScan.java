@@ -27,10 +27,4 @@ public class OrtScan {
 
     @Transient
     private OrtScanReport report;
-
-    @Transient
-    private OrtScanHtml html;
-
-    @Transient
-    private OrtScanLogs logs;
 }
