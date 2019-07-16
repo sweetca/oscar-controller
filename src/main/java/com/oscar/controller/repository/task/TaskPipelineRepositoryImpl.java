@@ -39,6 +39,13 @@ public class TaskPipelineRepositoryImpl implements TaskPipelineRepositoryCustom 
     }
 
     @Override
+    public SortedSet<TaskPipeline> findLatestProgress() {
+        Query query = new Query();
+        query.limit(20);
+        return new TreeSet<>(this.mongoOperations.find(query, TaskPipeline.class));
+    }
+
+    @Override
     public boolean incrementTaskProgress(String taskId) {
         Query query = Query.query(Criteria.where("_id").is(taskId));
         TaskPipeline task = this.mongoOperations.findOne(query, TaskPipeline.class);

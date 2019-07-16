@@ -49,4 +49,9 @@ public class TaskController {
     public ResponseEntity<?> getRunningTasks() {
         return ResponseEntity.ok(this.taskService.findTaskStatusInProgress());
     }
+
+    @GetMapping(value = "/latest")
+    public ResponseEntity<?> getLatestTasks() {
+        return ResponseEntity.ok(this.taskService.findTaskStatusInProgress());
+    }
 }

@@ -10,5 +10,7 @@ public interface TaskPipelineRepositoryCustom {
 
     SortedSet<TaskPipeline> findTaskStatusInProgress();
 
+    SortedSet<TaskPipeline> findLatestProgress();
+
     boolean incrementTaskProgress(String taskId);
 }

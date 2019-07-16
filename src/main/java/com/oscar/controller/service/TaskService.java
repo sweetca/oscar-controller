@@ -72,6 +72,10 @@ public class TaskService {
         return this.taskPipelineRepository.findTaskStatusInProgress();
     }
 
+    public SortedSet<TaskPipeline> findLatestProgress() {
+        return this.taskPipelineRepository.findTaskStatusInProgress();
+    }
+
     public TaskPipeline setupTask(TaskRequestDto request) {
         String taskValid = request.isValid();
         if (taskValid != null) {
