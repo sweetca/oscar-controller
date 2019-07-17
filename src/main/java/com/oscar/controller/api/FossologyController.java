@@ -30,8 +30,8 @@ public class FossologyController {
 
     @PostMapping(value = "/error/{component}/{version}")
     public ResponseEntity<?> saveScanError(@PathVariable String component,
-                                            @PathVariable String version,
-                                            @RequestBody String error) {
+                                           @PathVariable String version,
+                                           @RequestBody String error) {
         try {
             return ResponseEntity.ok(this.fossologyService.persistScanError(error, component, version));
         } catch (Exception e) {

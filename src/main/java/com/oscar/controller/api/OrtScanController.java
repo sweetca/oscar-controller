@@ -43,7 +43,7 @@ public class OrtScanController {
 
     @GetMapping("/{component}/{version}/html")
     public ResponseEntity<?> readOrtScanHtml(@PathVariable String component,
-                                         @PathVariable String version) {
+                                             @PathVariable String version) {
         try {
             return ResponseEntity.ok(this.ortScanService.readHtml(component, version));
         } catch (Exception e) {

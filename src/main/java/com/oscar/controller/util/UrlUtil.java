@@ -8,6 +8,9 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 public class UrlUtil {
 
     public static final String git_postfix = ".git";
+    public static final String GIT_PREFIX = "git+";
+    public static final String GIT_SSH_PREFIX = "git+ssh://git@";
+    public static final String GIT_POSTFIX = ".git";
     private static final String empty = "";
     private static final String https = "https://";
     private static final String http = "http://";
@@ -17,10 +20,6 @@ public class UrlUtil {
     private static final String ftp = "ftp://";
     private static final String gitlab_private_access_url = "https://gitlab-ci-token:%s@%s.git";
     private static final String github_private_access_url = "https://%s@%s.git";
-
-    public static final String GIT_PREFIX = "git+";
-    public static final String GIT_SSH_PREFIX = "git+ssh://git@";
-    public static final String GIT_POSTFIX = ".git";
 
     public static String privateAccessUrlGitLab(String token, String url) {
         url = url.replace(https, empty).replace(git_postfix, empty);

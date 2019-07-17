@@ -73,7 +73,7 @@ public class TaskService {
     }
 
     public SortedSet<TaskPipeline> findLatestProgress() {
-        return this.taskPipelineRepository.findTaskStatusInProgress();
+        return this.taskPipelineRepository.findLatestProgress();
     }
 
     public TaskPipeline setupTask(TaskRequestDto request) {
@@ -93,7 +93,7 @@ public class TaskService {
         if (jobConfig.contains(JobType.vulnerabilities)) {
             jobConfig.add(JobType.ort_analyze);
         }
-        if (jobConfig.contains(JobType.ort_scan)) {
+        if (jobConfig.contains(JobType.ort_scan) && jobConfig.contains(JobType.ort_analyze)) {
             jobConfig.remove(JobType.ort_analyze);
         }
 

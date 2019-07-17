@@ -31,9 +31,19 @@ public class ComponentController {
 
     @GetMapping(value = "/{component}/{version}")
     public ResponseEntity<?> findComponent(@PathVariable String component,
-                                      @PathVariable String version) {
+                                           @PathVariable String version) {
         try {
             return ResponseEntity.ok(this.componentService.findComponent(component, version));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/{component}/{version}/vulnerabilities")
+    public ResponseEntity<?> findComponentVulnerabilities(@PathVariable String component,
+                                                          @PathVariable String version) {
+        try {
+            return ResponseEntity.ok(this.componentService.findComponentVulnerabilities(component, version));
         } catch (Exception e) {
             return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
         }

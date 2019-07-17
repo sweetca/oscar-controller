@@ -12,7 +12,9 @@ public enum JobType {
 
     ort_scan(31),
 
-    vulnerabilities(40);
+    vulnerabilities(40),
+
+    nvd_update(41);
 
     private int type;
 

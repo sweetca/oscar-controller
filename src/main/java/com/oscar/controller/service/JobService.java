@@ -71,7 +71,6 @@ public class JobService {
         return job;
     }
 
-
     public SortedSet<Job> setupJobsFromRequest(final Component component, final SortedSet<JobType> jobConfig) {
         SortedSet<Job> result = new TreeSet<>();
         String relatedJob = null;
@@ -101,6 +100,12 @@ public class JobService {
             result.add(job);
         }
         return result;
+    }
+
+    public void initNvdUpdateJob() {
+        Job job = new Job();
+        job.setType(JobType.nvd_update);
+        this.jobRepository.save(job);
     }
 
     private String getRepoPath(String type, String id) {

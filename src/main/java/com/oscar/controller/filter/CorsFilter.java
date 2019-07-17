@@ -44,7 +44,7 @@ public class CorsFilter implements WebFilter {
             serverWebExchange.getResponse().setStatusCode(HttpStatus.OK);
             return Mono.empty();
         }
-        
+
         return webFilterChain.filter(serverWebExchange);
     }
 }

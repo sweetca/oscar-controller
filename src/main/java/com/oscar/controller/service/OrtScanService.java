@@ -1,7 +1,10 @@
 package com.oscar.controller.service;
 
 import com.oscar.controller.exceptions.OscarDataException;
-import com.oscar.controller.model.ort.*;
+import com.oscar.controller.model.ort.OrtScan;
+import com.oscar.controller.model.ort.OrtScanHtml;
+import com.oscar.controller.model.ort.OrtScanLogs;
+import com.oscar.controller.model.ort.OrtScanReport;
 import com.oscar.controller.repository.ort.OrtScanHtmlRepository;
 import com.oscar.controller.repository.ort.OrtScanLogsRepository;
 import com.oscar.controller.repository.ort.OrtScanReportRepository;
