@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
+import org.springframework.web.reactive.config.EnableWebFlux;
 import java.util.TimeZone;
 import java.util.concurrent.Executor;
 
@@ -22,6 +22,7 @@ import java.util.concurrent.Executor;
 @EnableMongoRepositories("com.oscar.controller")
 @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
+@EnableWebFlux
 public class Application {
 
     public static void main(String[] args) {
