@@ -38,23 +38,4 @@ public class FossologyController {
             return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
         }
     }
-
-    @GetMapping(value = "/{component}/{version}")
-    public ResponseEntity<?> findScan(@PathVariable String component,
-                                      @PathVariable String version) {
-        try {
-            return ResponseEntity.ok(this.fossologyService.findScan(component, version));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping(value = "/{component}")
-    public ResponseEntity<?> findScan(@PathVariable String component) {
-        try {
-            return ResponseEntity.ok(this.fossologyService.findScan(component));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
-    }
 }

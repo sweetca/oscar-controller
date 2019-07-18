@@ -8,7 +8,6 @@ import com.oscar.controller.model.nvd.Vulnerability;
 import com.oscar.controller.model.ort.OrtScan;
 import com.oscar.controller.repository.component.ComponentNvdRepository;
 import com.oscar.controller.repository.component.ComponentRepository;
-import com.oscar.controller.repository.fossology.FossologyRepository;
 import com.oscar.controller.repository.nvd.VulnerabilityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -28,20 +27,17 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class ComponentService {
 
     private final ComponentRepository componentRepository;
-    private final FossologyRepository fossologyRepository;
     private final VulnerabilityRepository vulnerabilityRepository;
     private final ComponentNvdRepository componentNvdRepository;
     private final OrtScanService ortScanService;
     private final TaskService taskService;
 
     public ComponentService(ComponentRepository componentRepository,
-                            FossologyRepository fossologyRepository,
                             VulnerabilityRepository vulnerabilityRepository,
                             ComponentNvdRepository componentNvdRepository,
                             OrtScanService ortScanService,
                             TaskService taskService) {
         this.componentRepository = componentRepository;
-        this.fossologyRepository = fossologyRepository;
         this.vulnerabilityRepository = vulnerabilityRepository;
         this.componentNvdRepository = componentNvdRepository;
         this.ortScanService = ortScanService;
@@ -52,18 +48,8 @@ public class ComponentService {
         return this.componentRepository.findAll(new Sort(Sort.Direction.DESC, "date"));
     }
 
-    public Component findComponent(String id) {
-        Component component = this.componentRepository.findById(id).orElseThrow(OscarDataException::noComponentFound);
-        component.setFossologyScan(this.fossologyRepository.findByComponent(id).orElse(null));
-        component.setOrtScan(this.ortScanService.readScanOpt(id).orElse(null));
-        component.setTask(this.taskService.findFullTaskByComponent(id).orElse(null));
-        return component;
-    }
-
     public Component findComponent(String id, String version) {
         Component component = this.componentRepository.findByIdAndVersion(id, version).orElseThrow(OscarDataException::noComponentFound);
-        component.setFossologyScan(this.fossologyRepository.findByComponentAndVersion(id, version).orElse(null));
-        component.setOrtScan(this.ortScanService.readScanOpt(id, version).orElse(null));
         component.setTask(this.taskService.findFullTaskByComponentAndVersion(id, version).orElse(null));
         return component;
     }

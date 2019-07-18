@@ -34,17 +34,6 @@ public class OrtScanService {
         this.ortScanHtmlRepository = ortScanHtmlRepository;
     }
 
-    public OrtScan readScan(String component) {
-        OrtScan scan = this.ortScanRepository
-                .findByComponent(component)
-                .orElseThrow(OscarDataException::noOrtScanFound);
-
-        scan.setReport(this.ortScanReportRepository
-                .findByComponent(component).orElse(null));
-
-        return scan;
-    }
-
     public OrtScan readScan(String component, String version) {
         OrtScan scan = this.ortScanRepository
                 .findByComponentAndVersion(component, version)
@@ -54,6 +43,14 @@ public class OrtScanService {
                 .findByComponentAndVersion(component, version).orElse(null));
 
         return scan;
+    }
+
+    public Optional<OrtScan> readScanOpt(String component, String version) {
+        try {
+            return Optional.of(readScan(component, version));
+        } catch (OscarDataException e) {
+            return Optional.empty();
+        }
     }
 
     public OrtScanLogs readLogs(String component, String version) {
@@ -124,22 +121,6 @@ public class OrtScanService {
         this.ortScanLogsRepository.save(scanLogs);
         log.info("ort scan logs created {}/{}", component, version);
         return insureScan(component, version);
-    }
-
-    public Optional<OrtScan> readScanOpt(String component) {
-        try {
-            return Optional.of(readScan(component));
-        } catch (OscarDataException e) {
-            return Optional.empty();
-        }
-    }
-
-    public Optional<OrtScan> readScanOpt(String component, String version) {
-        try {
-            return Optional.of(readScan(component, version));
-        } catch (OscarDataException e) {
-            return Optional.empty();
-        }
     }
 
     private OrtScan insureScan(final String component, final String version) {

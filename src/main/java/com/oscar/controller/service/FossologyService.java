@@ -58,12 +58,6 @@ public class FossologyService {
         return scan.getId();
     }
 
-    public FossologyScan findScan(String component) {
-        return this.fossologyRepository
-                .findByComponent(component)
-                .orElseThrow(OscarDataException::noFossologyFound);
-    }
-
     public FossologyScan findScan(String component, String version) {
         return this.fossologyRepository
                 .findByComponentAndVersion(component, version)

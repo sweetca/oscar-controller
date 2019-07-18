@@ -14,6 +14,7 @@ public class ScheduleJobService {
     private final String podName = "oscar-controller-1";
     private final JobService jobService;
     private final ComponentService componentService;
+    private boolean vulnerabilityJob = false;
 
     @Autowired
     public ScheduleJobService(JobService jobService,
@@ -27,7 +28,6 @@ public class ScheduleJobService {
         this.jobService.initNvdUpdateJob();
     }
 
-    private boolean vulnerabilityJob = false;
     @Scheduled(cron = "0 */1 * * * *")
     public void proceedVulnerabilityJob() {
         if (vulnerabilityJob) {

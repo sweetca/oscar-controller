@@ -4,7 +4,6 @@ import com.oscar.controller.model.ort.OrtScanReport;
 import com.oscar.controller.service.OrtScanService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,45 +19,6 @@ public class OrtScanController {
     @Autowired
     public OrtScanController(OrtScanService ortScanService) {
         this.ortScanService = ortScanService;
-    }
-
-    @GetMapping("/{component}")
-    public ResponseEntity<?> readOrtScan(@PathVariable String component) {
-        try {
-            return ResponseEntity.ok(this.ortScanService.readScan(component));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/{component}/{version}")
-    public ResponseEntity<?> readOrtScan(@PathVariable String component,
-                                         @PathVariable String version) {
-        try {
-            return ResponseEntity.ok(this.ortScanService.readScan(component, version));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/{component}/{version}/html")
-    public ResponseEntity<?> readOrtScanHtml(@PathVariable String component,
-                                             @PathVariable String version) {
-        try {
-            return ResponseEntity.ok(this.ortScanService.readHtml(component, version));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/{component}/{version}/logs")
-    public ResponseEntity<?> readOrtScanLogs(@PathVariable String component,
-                                             @PathVariable String version) {
-        try {
-            return ResponseEntity.ok(this.ortScanService.readLogs(component, version));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PostMapping("/report/{component}/{version}")
