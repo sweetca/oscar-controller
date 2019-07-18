@@ -1,5 +1,6 @@
 package com.oscar.controller.service;
 
+import com.oscar.controller.dto.VulnerabilityDto;
 import com.oscar.controller.dto.VulnerabilityRequestDto;
 import com.oscar.controller.exceptions.OscarDataException;
 import com.oscar.controller.model.component.Component;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -54,7 +56,7 @@ public class ComponentService {
         return component;
     }
 
-    public Map<String, Set<Vulnerability>> findComponentVulnerabilities(String component, String version) {
+    public Map<String, Set<VulnerabilityDto>> findComponentVulnerabilities(String component, String version) {
         return this.componentNvdRepository
                 .findByIdAndVersion(component, version)
                 .orElseThrow(OscarDataException::noComponentData)
@@ -63,7 +65,7 @@ public class ComponentService {
 
     @Async
     public CompletableFuture<Boolean> proceedComponentVulnerabilities(String id, String version) {
-        Map<String, Set<Vulnerability>> vulnerabilities = new HashMap<>();
+        Map<String, Set<VulnerabilityDto>> vulnerabilities = new HashMap<>();
         OrtScan scan = this.ortScanService.readScanOpt(id, version).orElse(null);
         if (scan == null) {
             return CompletableFuture.completedFuture(false);
@@ -83,7 +85,11 @@ public class ComponentService {
             }
 
             try {
-                vulnerabilities.put(p.getName(), this.vulnerabilityRepository.match(dto));
+                vulnerabilities.put(p.getName(),
+                        this.vulnerabilityRepository.match(dto)
+                                .stream()
+                                .map(VulnerabilityDto::fromModel)
+                                .collect(Collectors.toSet()));
             } catch (Exception e) {
                 log.error("Error findComponentVulnerabilities", e);
             }

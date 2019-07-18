@@ -1,6 +1,6 @@
 package com.oscar.controller.model.component;
 
-import com.oscar.controller.model.nvd.Vulnerability;
+import com.oscar.controller.dto.VulnerabilityDto;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,11 +14,14 @@ import java.util.Set;
 @Document
 public class ComponentNvd {
 
-    Map<String, Set<Vulnerability>> nvd = new HashMap<>();
     @Id
     private String id;
+
     @Indexed
     private String component;
+
     @Indexed
     private String version;
+
+    Map<String, Set<VulnerabilityDto>> nvd = new HashMap<>();
 }
