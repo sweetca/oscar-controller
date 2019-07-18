@@ -19,10 +19,10 @@ public class NvdController {
         this.vulnerabilityRepository = vulnerabilityRepository;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findComponentVulnerabilities(@PathVariable String id) {
+    @GetMapping(value = "/{cveId}")
+    public ResponseEntity<?> findComponentVulnerabilities(@PathVariable String cveId) {
         try {
-            return ResponseEntity.ok(this.vulnerabilityRepository.findById(id).get());
+            return ResponseEntity.ok(this.vulnerabilityRepository.findFirstByCveId(cveId).get());
         } catch (Exception e) {
             return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
         }
