@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ComponentNvdRepository extends MongoRepository<ComponentNvd, String> {
 
-    Optional<ComponentNvd> findByIdAndVersion(String id, String version);
+    Optional<ComponentNvd> findByComponentAndVersion(String id, String version);
 }

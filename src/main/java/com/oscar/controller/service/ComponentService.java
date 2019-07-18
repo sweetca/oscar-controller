@@ -52,7 +52,7 @@ public class ComponentService {
 
     public ComponentNvd findComponentVulnerabilities(String component, String version) {
         return this.componentNvdRepository
-                .findByIdAndVersion(component, version)
+                .findByComponentAndVersion(component, version)
                 .orElseThrow(OscarDataException::noComponentData);
     }
 
