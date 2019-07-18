@@ -7,12 +7,14 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 @Data
+@Document
 public class Component {
 
     @Id

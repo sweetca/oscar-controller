@@ -78,6 +78,7 @@ public class JobService {
             Job job = new Job();
             job.setType(type);
             job.setComponent(component.getId());
+            job.setVersion(component.getVersion());
 
             Map<String, Object> payload = job.getPayload();
             payload.put("component", component.getId());

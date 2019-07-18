@@ -3,19 +3,23 @@ package com.oscar.controller.service;
 import com.oscar.controller.dto.VulnerabilityRequestDto;
 import com.oscar.controller.exceptions.OscarDataException;
 import com.oscar.controller.model.component.Component;
+import com.oscar.controller.model.component.ComponentNvd;
 import com.oscar.controller.model.nvd.Vulnerability;
 import com.oscar.controller.model.ort.OrtScan;
+import com.oscar.controller.repository.component.ComponentNvdRepository;
 import com.oscar.controller.repository.component.ComponentRepository;
 import com.oscar.controller.repository.fossology.FossologyRepository;
 import com.oscar.controller.repository.nvd.VulnerabilityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -26,17 +30,20 @@ public class ComponentService {
     private final ComponentRepository componentRepository;
     private final FossologyRepository fossologyRepository;
     private final VulnerabilityRepository vulnerabilityRepository;
+    private final ComponentNvdRepository componentNvdRepository;
     private final OrtScanService ortScanService;
     private final TaskService taskService;
 
     public ComponentService(ComponentRepository componentRepository,
                             FossologyRepository fossologyRepository,
                             VulnerabilityRepository vulnerabilityRepository,
+                            ComponentNvdRepository componentNvdRepository,
                             OrtScanService ortScanService,
                             TaskService taskService) {
         this.componentRepository = componentRepository;
         this.fossologyRepository = fossologyRepository;
         this.vulnerabilityRepository = vulnerabilityRepository;
+        this.componentNvdRepository = componentNvdRepository;
         this.ortScanService = ortScanService;
         this.taskService = taskService;
     }
@@ -61,10 +68,21 @@ public class ComponentService {
         return component;
     }
 
-    public Map<String, Set<Vulnerability>> findComponentVulnerabilities(String id, String version) {
+    public Map<String, Set<Vulnerability>> findComponentVulnerabilities(String component, String version) {
+        return this.componentNvdRepository
+                .findByIdAndVersion(component, version)
+                .orElseThrow(OscarDataException::noComponentData)
+                .getNvd();
+    }
+
+    @Async
+    public CompletableFuture<Boolean> proceedComponentVulnerabilities(String id, String version) {
         Map<String, Set<Vulnerability>> vulnerabilities = new HashMap<>();
-        OrtScan scan = this.ortScanService.readScanOpt(id, version).orElseThrow(OscarDataException::noOrtScanFound);
-        scan.getReport().getPackages().forEach(p -> {
+        OrtScan scan = this.ortScanService.readScanOpt(id, version).orElse(null);
+        if (scan == null) {
+            return CompletableFuture.completedFuture(false);
+        }
+        scan.getReport().getPackages().parallelStream().forEach(p -> {
             VulnerabilityRequestDto dto = new VulnerabilityRequestDto();
 
             String[] data = p.getName().split(":");
@@ -78,9 +96,19 @@ public class ComponentService {
                 dto.setUrl(p.getVcs().getUrl());
             }
 
-            vulnerabilities.put(p.getName(), this.vulnerabilityRepository.match(dto));
-
+            try {
+                vulnerabilities.put(p.getName(), this.vulnerabilityRepository.match(dto));
+            } catch (Exception e) {
+                log.error("Error findComponentVulnerabilities", e);
+            }
         });
-        return vulnerabilities;
+
+        ComponentNvd nvd = new ComponentNvd();
+        nvd.setComponent(id);
+        nvd.setVersion(version);
+        nvd.setNvd(vulnerabilities);
+        this.componentNvdRepository.save(nvd);
+
+        return CompletableFuture.completedFuture(true);
     }
 }

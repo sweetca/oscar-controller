@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/oscar
+
+application:
+  repositoryDir: /tmp/oscar
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.data: DEBUG
+    com.oscar.controller: DEBUG

@@ -15,5 +15,5 @@ logging:
   level:
     root: WARN
     org.springframework.web: WARN
-    org.hibernate: WARN
-    com.codescoop.crawler: WARN
+    org.springframework.data: WARN
+    com.oscar.controller: WARN
