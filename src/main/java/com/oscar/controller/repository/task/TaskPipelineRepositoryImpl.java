@@ -21,14 +21,10 @@ public class TaskPipelineRepositoryImpl implements TaskPipelineRepositoryCustom 
     }
 
     @Override
-    public TaskPipeline findTaskStatusById(String taskId) {
-        Query query = new Query();
-        query.fields().include("_id");
-        query.fields().include("progress");
+    public boolean findTaskStatusById(String taskId) {
+        Query query = Query.query(Criteria.where("_id").is(taskId));
         query.fields().include("finished");
-        query.fields().include("created");
-        query.fields().include("updated");
-        return this.mongoOperations.findOne(query, TaskPipeline.class);
+        return this.mongoOperations.findOne(query, TaskPipeline.class).isFinished();
     }
 
     @Override

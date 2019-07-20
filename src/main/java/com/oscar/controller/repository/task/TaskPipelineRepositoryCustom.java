@@ -6,7 +6,7 @@ import java.util.SortedSet;
 
 public interface TaskPipelineRepositoryCustom {
 
-    TaskPipeline findTaskStatusById(String taskId);
+    boolean findTaskStatusById(String taskId);
 
     SortedSet<TaskPipeline> findTaskStatusInProgress();
 

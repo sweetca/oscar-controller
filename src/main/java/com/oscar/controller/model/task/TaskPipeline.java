@@ -54,10 +54,10 @@ public class TaskPipeline implements Comparable<TaskPipeline> {
     }
 
     public int getProgressBar() {
-        if (jobs.size() == progress) {
+        if (this.isFinished()) {
             return 100;
         } else {
-            return (100 / jobs.size()) * (int) progress;
+            return (100 / jobs.size()) * progress;
         }
     }
 }

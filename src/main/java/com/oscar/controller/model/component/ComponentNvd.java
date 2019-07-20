@@ -13,14 +13,11 @@ import java.util.Set;
 @Document
 public class ComponentNvd {
 
+    Map<String, Set<String>> nvdMap = new HashMap<>();
     @Id
     private String id;
-
     @Indexed
     private String component;
-
     @Indexed
     private String version;
-
-    Map<String, Set<String>> nvdMap = new HashMap<>();
 }

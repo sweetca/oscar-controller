@@ -42,15 +42,6 @@ public class TaskService {
         return task;
     }
 
-    public Optional<TaskPipeline> findFullTaskByComponent(String component) {
-        TaskPipeline task = this.taskPipelineRepository.findByComponent(component).orElse(null);
-        if (task != null) {
-            task.getJobsReference().addAll(this.jobService.findJobsByIds(task.getJobs()));
-            return Optional.of(task);
-        }
-        return Optional.empty();
-    }
-
     public Optional<TaskPipeline> findFullTaskByComponentAndVersion(String component, String version) {
         TaskPipeline task = this.taskPipelineRepository.findByComponentAndVersion(component, version).orElse(null);
         if (task != null) {
@@ -60,12 +51,8 @@ public class TaskService {
         return Optional.empty();
     }
 
-    public TaskPipeline findStatusTaskById(String taskId) {
-        TaskPipeline task = this.taskPipelineRepository.findTaskStatusById(taskId);
-        if (task == null) {
-            throw OscarDataException.noTaskFound();
-        }
-        return task;
+    public boolean findStatusTaskById(String taskId) {
+        return this.taskPipelineRepository.findTaskStatusById(taskId);
     }
 
     public SortedSet<TaskPipeline> findTaskStatusInProgress() {

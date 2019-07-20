@@ -39,7 +39,8 @@ public class TaskController {
     @GetMapping(value = "/{taskId}/status")
     public ResponseEntity<?> getTaskStatus(@PathVariable String taskId) {
         try {
-            return ResponseEntity.ok(this.taskService.findStatusTaskById(taskId));
+            boolean status = this.taskService.findStatusTaskById(taskId);
+            return ResponseEntity.ok(status + "");
         } catch (Exception e) {
             return new ResponseEntity<>(new Error(e.getMessage(), e), HttpStatus.BAD_REQUEST);
         }
