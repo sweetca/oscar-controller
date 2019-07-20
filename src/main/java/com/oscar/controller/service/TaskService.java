@@ -77,11 +77,11 @@ public class TaskService {
         if (!jobConfig.contains(JobType.git_clone)) {
             jobConfig.add(JobType.git_clone);
         }
-        if (jobConfig.contains(JobType.ort_scan) && jobConfig.contains(JobType.ort_analyze)) {
+        if (jobConfig.contains(JobType.ort_scan)) {
             jobConfig.remove(JobType.ort_analyze);
         }
         if (jobConfig.contains(JobType.vulnerabilities)
-                && (!jobConfig.contains(JobType.ort_scan) || !jobConfig.contains(JobType.ort_analyze))) {
+                && !(jobConfig.contains(JobType.ort_scan) || jobConfig.contains(JobType.ort_analyze))) {
             jobConfig.add(JobType.ort_analyze);
         }
 
